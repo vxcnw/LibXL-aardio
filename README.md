@@ -1,5 +1,5 @@
 # libxl-bindings-for-aardio
-#### [libxl](https://www.libxl.com/) LibXL is a library that can read and write Excel files. It doesn't require Microsoft Excel and .NET framework, combines an easy to use and powerful features. Library can be used to
+#### [libxl](https://www.libxl.com/) is a library that can read and write Excel files. It doesn't require Microsoft Excel and .NET framework, combines an easy to use and powerful features. Library can be used to
 * Generate a new spreadsheet from scratch
 * Extract data from an existing spreadsheet
 * Edit an existing spreadsheet
@@ -9,6 +9,7 @@
 * Index starts at 1
 
 ## example
+* create a xls file
 ````javascript
 import aaz.libxl;
 
@@ -52,6 +53,7 @@ book.save("\custom.xls");
 book.release();
 ````
 
+* read a xls file
 ````javascript
 io.open()
 
@@ -85,7 +87,7 @@ for(i=sheet.firstRow; sheet.lastRow; 1){
 book.release()
 execute("pause")
 ````
-
+* use format
 ````javascript
 import aaz.libxl;
 
@@ -113,6 +115,7 @@ book.save("\format.xls");
 book.release();
 ````
 
+* use formula
 ````javascript
 import aaz.libxl;
 
