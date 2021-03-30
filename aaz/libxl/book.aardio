@@ -1,9 +1,10 @@
 ﻿//book 书本
 var _dll = aaz.libxl._dll;
+var xlBookDateUnpack = _dll.api( "xlBookDateUnpack", "int(ptr, double, int&, int&, int&, int&, int&, int&, int&)" );
 
 namespace aaz.libxl;
 class book{   
-	ctor( handle ){
+	ctor(handle){
 		if(!handle) return ; 
 		this.handle = handle;
 		
@@ -17,7 +18,7 @@ class book{
 		}
 	}
 		
-	setKey = function(name="your name", key="your key"){
+	setKey = function(name="GCCG", key="windows-282123090cc0e6036db16b60a1o3p0h9"){
 		_dll.xlBookSetKey(this.handle, name, key);
 	}
 			
@@ -88,34 +89,34 @@ class book{
 	}
 
 	addSheet = function( name, initSheet=1 ){
-		return ..aaz.libxl.sheet( _dll.xlBookAddSheetP(this.handle, name, initSheet-1) );	
+		return ..aaz.libxl.sheet(_dll.xlBookAddSheetP(this.handle, name, initSheet-1));	
 	}
 	
-	insertShee = function(index, name, initSheet){
-		return ..aaz.libxl.sheet( _dll.xlBookInsertSheetP(this.handle, index, name, initSheet) );
+	insertSheet = function(index, name, initSheet){
+		return ..aaz.libxl.sheet(_dll.xlBookInsertSheetP(this.handle, index-1, name, initSheet));
 	}
 	
 	getSheet = function(index){
-		return ..aaz.libxl.sheet( _dll.xlBookGetSheetP(this.handle, index) );
+		return ..aaz.libxl.sheet(_dll.xlBookGetSheetP(this.handle, index-1));
 	}
 	
 	getSheetName = function(index){
-		return ..raw.str( _dll.xlBookGetSheetNameP(this.handle, index), true );
+		return ..raw.str(_dll.xlBookGetSheetNameP(this.handle, index-1), true);
 	}
 	
 	sheetType = function(index){
-		return _dll.xlBookSheetType( this.handle, index ); 
+		return _dll.xlBookSheetType(this.handle, index-1); 
 	}
 	
-	moveSheet = function( srcIndex, dstIndex ){
-		return _dll.xlBookMoveSheet( this.handle, srcIndex, dstIndex ); 
+	moveSheet = function(srcIndex, dstIndex ){
+		return _dll.xlBookMoveSheet(this.handle, srcIndex, dstIndex); 
 	}
 	
 	delSheet = function(index){
-		return _dll.xlBookDelSheet( this.handle, index ); 
+		return _dll.xlBookDelSheet( this.handle, index-1 ); 
 	}
 	
-	addFormat = function( initFormat=0 ){
+	addFormat = function(initFormat=0 ){
 		return ..aaz.libxl.format( _dll.xlBookAddFormatP(this.handle, initFormat) ); 
 	}
 	
@@ -132,34 +133,34 @@ class book{
 	}
 	
 	customNumFormat = function(fmt){
-		return ..raw.str( _dll.xlBookCustomNumFormatP(this.handle,fmt), true ); 
+		return ..raw.str( _dll.xlBookCustomNumFormatP(this.handle,fmt), true); 
 	}
 	
 	format = function(index){
-		return ..aaz.libxl.format( _dll.xlBookFormatP(this.handle,index) ); 
+		return ..aaz.libxl.format(_dll.xlBookFormatP(this.handle,index-1)); 
 	}
 	
 	font = function(index){
-		return ..aaz.libxl.font( _dll.xlBookFontP( this.handle,index ) ); 
+		return ..aaz.libxl.font(_dll.xlBookFontP(this.handle,index-1)); 
 	}
 	
-	datePack = function( year, month, day, hour, min, sec, msec ){
-		return _dll.xlBookDatePackD( this.handle, year, month, day, hour, min, sec, msec ); 
+	datePack = function(year, month, day, hour, min, sec, msec){
+		return _dll.xlBookDatePackD(this.handle, year, month, day, hour, min, sec, msec); 
 	}
 	
 	dateUnpack = function(value){
-		return xlBookDateUnpack( this.handle,value, 0, 0, 0, 0, 0, 0, 0 ); 
+		return xlBookDateUnpack(this.handle, value, 0, 0, 0, 0, 0, 0, 0); 
 	}
 	
-	colorPack = function( red, green, blue){
-		return _dll.xlBookColorPack( this.handle, red, green, blue ); 
+	colorPack = function(red, green, blue){
+		return _dll.xlBookColorPack( this.handle, red, green, blue); 
 	}
 	
-	colorUnpack = function( color ){
+	colorUnpack = function(color){
 		var red = {int value};
 		var green = {int value};
 		var blue = {int value};
-		_dll.xlBookColorUnpack( this.handle, red, green, blue );
+		_dll.xlBookColorUnpack(this.handle, red, green, blue);
 		
 		return 
 			red.value,
@@ -172,42 +173,40 @@ class book{
 		var size = {INT value};
 		
 		return 
-			_dll.xlBookGetPicture( this.handle, data, size ),
+			_dll.xlBookGetPicture(this.handle, index-1, data, size ),
 			data.value,
 			size.value; 
 	}
 	
 	addPicture = function(filename){
 		filename = ..io.fullpath(filename);
-		return _dll.xlBookAddPicture( this.handle, filename ); 
+		return _dll.xlBookAddPicture(this.handle, filename); 
 	}
 	
 	addPicture2 = function(data){
-		return _dll.xlBookAddPictureA( this.handle, data, #data ); 
+		return _dll.xlBookAddPictureA(this.handle, data, #data); 
 	}
 	
-	addPictureAsLink = function( filename, insert ){
+	addPictureAsLink = function(filename, insert){
 		filename = ..io.fullpath(filename);
-		return _dll.xlBookAddPictureAsLink( this.handle, filename, insert ); 
+		return _dll.xlBookAddPictureAsLink(this.handle, filename, insert); 
 	}
 	
 	defaultFont = function(){
 		var fontSize = {int value};
 		
 		return 
-			..raw.str( _dll.xlBookDefaultFontP(this.handle, fontSize), true ),
+			..raw.str( _dll.xlBookDefaultFontP(this.handle, fontSize), true),
 			fontSize.value;
 	}
 	
-	setDefaultFont = function( fontName, fontSize ){
-		_dll.xlBookSetDefaultFont( this.handle, fontName, fontSize );
+	setDefaultFont = function(fontName, fontSize){
+		_dll.xlBookSetDefaultFont(this.handle, fontName, fontSize);
 	}
 	
 	@_metaProperty;
 }
 namespace book{
-    xlBookDateUnpack = _dll.api( "xlBookDateUnpack", "int(ptr, double, int&, int&, int&, int&, int&, int&, int&)" );
-
     _properties = {  		
    		count = {
    			_get = function(){
@@ -233,13 +232,13 @@ namespace book{
    			}
    			
    			_set = function(v){
-   				_dll.xlBookSetActiveSheet( owner.handle, v );
+   				_dll.xlBookSetActiveSheet(owner.handle, v);
    			}
 		}
 		
 		pictureSize = {
 			_set = function(v){
-				return _dll.xlBookPictureSize( owner.handle, v ); 
+				return _dll.xlBookPictureSize(owner.handle, v); 
 			}
 			
 		}
@@ -250,7 +249,7 @@ namespace book{
 			}
 			
 			_set = function(v){
-				_dll.xlBookSetRefR1C1( owner.handle, v );
+				_dll.xlBookSetRefR1C1(owner.handle, v);
 			}
 		}
 		
@@ -260,7 +259,7 @@ namespace book{
 			}
 			
 			_set = function(v){
-				_dll.xlBookSetRgbMode( owner.handle, v );
+				_dll.xlBookSetRgbMode(owner.handle, v);
 			}
 		}
 		
@@ -270,7 +269,7 @@ namespace book{
 			}
 			
 			_set = function(v){
-				_dll.xlBookSetCalcMode( owner.handle, v );
+				_dll.xlBookSetCalcMode(owner.handle, v);
 			}
 		}
 		
@@ -292,7 +291,7 @@ namespace book{
 			}
 			
 			_set = function(v){
-				_dll.xlBookSetDate1904( owner.handle, v );
+				_dll.xlBookSetDate1904(owner.handle, v);
 			}
 		}
 		
@@ -302,17 +301,17 @@ namespace book{
 			}
 			
 			_set = function(v){
-				_dll.xlBookSetTemplate( owner.handle, v );
+				_dll.xlBookSetTemplate(owner.handle, v);
 			}
 		}
 		
 		errorMessage = {
 			_get = function(){
-				return ..raw.str( _dll.xlBookErrorMessageP(owner.handle), true ); 
+				return ..raw.str(_dll.xlBookErrorMessageP(owner.handle), true); 
 			}
 		}
     }
     
-   _metaProperty = ..aaz.libxl.metaProperty( _properties );
+   _metaProperty = ..aaz.libxl.metaProperty(_properties);
 }
 

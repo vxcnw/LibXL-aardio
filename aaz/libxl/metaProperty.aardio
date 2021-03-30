@@ -4,7 +4,7 @@ import util.metaProperty;
 namespace aaz.libxl;
 class metaProperty{
 	ctor(properties){
-		this = ..util.metaProperty( base, properties );
+		this = ..util.metaProperty(base, properties);
 
 		this._properties = {
 			_get = function(){
@@ -23,18 +23,18 @@ namespace metaProperty{
    			_set = function(tab){
    				if( type(tab) == type.table ){
    					for(k,v in tab){
-   						if( owner.hasSetter(k) ) owner[k] = v;
+   						if(owner.hasSetter(k)) owner[k] = v;
    					}
    				}
    			}
    		} 
 	
    		__get = function(k, ownerCall){	
-   			if(  ownerCall ? ..string.match(k, "^set\u") ){
+   			if(ownerCall ? ..string.match(k, "^set\u")){
    				k = ..string.slice(k, 4, -1);
-   				k = ..string.replace( k, "^\a", λ(str) ..string.lower(str) )
+   				k = ..string.replace(k, "^\a", λ(str) ..string.lower(str));
 	
-   				if( owner.hasSetter(k) ){
+   				if(owner.hasSetter(k)){
    					return function(v){
    						owner[k] = v;
    						return owner; 

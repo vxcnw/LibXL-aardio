@@ -1,7 +1,7 @@
 import aaz.libxl;
 
 var book = aaz.libxl.createXmlBook();
-book.setKey( )
+book.setKey()
 
 var boldFont = book.addFont(0);
 boldFont.bold = 1;

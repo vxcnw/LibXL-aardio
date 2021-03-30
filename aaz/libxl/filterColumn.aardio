@@ -1,6 +1,7 @@
-﻿var _dll = aaz.libxl._dll;
+﻿namespace aaz.libxl;
+var _dll = ..aaz.libxl._dll;
+var xlFilterColumnSetTop10 = _dll.api( "xlFilterColumnSetTop10", "void(ptr, double, int, int)" );
 
-namespace aaz.libxl;
 class filterColumn{ 
 	ctor(handle){
 		if(!handle) return ; 
@@ -23,7 +24,7 @@ class filterColumn{
 			percent.value; 
 	}
 	
-	setTop10 = function( value, top, percent ){
+	setTop10 = function(value, top, percent){
 		_dll.xlFilterColumnSetTop10(this.handle, value, top, percent);
 	}
 	
@@ -57,9 +58,7 @@ class filterColumn{
 	
 	@_metaProperty;	
 }
-namespace filterColumn{ 
-    xlFilterColumnSetTop10 = _dll.api( "xlFilterColumnSetTop10", "void(ptr, double, int, int)" )
-    
+namespace filterColumn{  
 	_properties = {
 		index = {
 			_get = function(){
@@ -86,6 +85,6 @@ namespace filterColumn{
 		}
 	}
 	
-	_metaProperty = ..aaz.libxl.metaProperty( _properties );
+	_metaProperty = ..aaz.libxl.metaProperty(_properties);
 }
 

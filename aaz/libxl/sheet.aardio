@@ -1,55 +1,68 @@
 ﻿//sheet 页面
 var _dll = aaz.libxl._dll;
+var xlSheetWriteNum = _dll.api( "xlSheetWriteNum", "int(ptr,int,int,double,ptr)" ); 
+var xlSheetWriteFormulaNum = _dll.api( "xlSheetWriteFormulaNum", "int(ptr, int, int, ustring, double, ptr)" )
+var xlSheetSetCol = _dll.api( "xlSheetSetCol", "int(ptr,int,int,double,ptr,int)" ); 
+var xlSheetSetRow = _dll.api( "xlSheetSetRow", "int(ptr,int,double,ptr,int)" ); 
+var xlSheetSetPicture = _dll.api( "xlSheetSetPicture", "void(ptr, int, int, int, double, int, int, int)" )	
+var xlSheetSetHeader = _dll.api( "xlSheetSetHeader", "int(ptr, ustring, double)" );
+var xlSheetSetFooter = _dll.api( "xlSheetSetFooter", "int(ptr, ustring, double)" );
+var xlSheetSetMarginLeft = _dll.api( "xlSheetSetMarginLeft", "void(ptr, double)" ); 
+var xlSheetSetMarginRight = _dll.api( "xlSheetSetMarginRight", "void(ptr, double)" ); 
+var xlSheetSetMarginTop = _dll.api( "xlSheetSetMarginTop", "void(ptr, double)" ); 
+var xlSheetSetMarginBottom = _dll.api( "xlSheetSetMarginBottom", "void(ptr, double)" ); 
+var xlSheetAddDataValidationDouble = _dll.api( "xlSheetAddDataValidationDouble", "void(ptr, int, int, int, int, int, int, double, double)" ); 
+var xlSheetAddDataValidationDoubleEx = _dll.api( "xlSheetAddDataValidationDoubleEx", "void(ptr, int, int, int, int, int, int, double, double, int, int, int, int, ustring, ustring,ustring, ustring, int)" ); 
 
 namespace aaz.libxl;
 class sheet{
-	ctor( handle ){
+	ctor(handle){
 		if(!handle) return ; 
 		this.handle = handle;
 	}
 	
-	cellType = function( row, col ){
-		return _dll.xlSheetCellType( this.handle, row-1, col-1 ); 
+	cellType = function(row, col){
+		return _dll.xlSheetCellType(this.handle, row-1, col-1); 
 	}
 	
-	isFormula = function( row, col ){
-		return _dll.xlSheetIsFormula( this.handle, row-1, col-1 ); 
+	isFormula = function(row, col){
+		return _dll.xlSheetIsFormula(this.handle, row-1, col-1); 
 	}
 	
-	cellFormat = function( row, col ){
-		return ..aaz.libxl.format( _dll.xlSheetCellFormatP(this.handle, row-1, col-1) ); 
+	cellFormat = function(row, col){
+		return ..aaz.libxl.format(_dll.xlSheetCellFormatP(this.handle, row-1, col-1)); 
 	}
 	
-	setCellFormat = function( row, col, format ){
-		return _dll.xlSheetSetCellFormat( this.handle, row-1, col-1, format ); 
+	setCellFormat = function(row, col, format){
+		return _dll.xlSheetSetCellFormat(this.handle, row-1, col-1, format); 
 	}
 	
-	readStr = function( row, col ){
+	readStr = function(row, col){
 		var formatHandle = {ptr value};
 		
 		return 
-			..raw.str( _dll.xlSheetReadStrP(this.handle, row-1, col-1, formatHandle), true ),
-			..aaz.libxl.format( formatHandle.value );
+			..raw.str(_dll.xlSheetReadStrP(this.handle, row-1, col-1, formatHandle), true),
+			..aaz.libxl.format(formatHandle.value);
 	}
 	
-	writeStr = function( row, col, value, format ){
-		return _dll.xlSheetWriteStr( this.handle, row-1, col-1, value, format );
+	writeStr = function(row, col, value, format){
+		return _dll.xlSheetWriteStr(this.handle, row-1, col-1, value, format);
 	}
 	
-	writeStrAsNum = function( row, col, value, format ){
-		return _dll.xlSheetWriteStrAsNum( this.handle, row-1, col-1, value, format );
+	writeStrAsNum = function(row, col, value, format){
+		return _dll.xlSheetWriteStrAsNum(this.handle, row-1, col-1, value, format);
 	}
 	
-	readRichStr = function( row, col ){
+	readRichStr = function(row, col){
 		var formatHandle = {ptr value};
 		
 		return 
-			..aaz.libxl.richString( _dll.xlSheetReadRichStrP(this.handle, row-1, col-1, formatHandle) ),
-			..aaz.libxl.format( formatHandle.value );
+			..aaz.libxl.richString( _dll.xlSheetReadRichStrP(this.handle, row-1, col-1, formatHandle)),
+			..aaz.libxl.format(formatHandle.value);
 	}	
 	
-	writeRichStr = function( row, col, richString, format ){
-		return _dll.xlSheetWriteRichStr( this.handle, row-1, col-1, richString, format );
+	writeRichStr = function(row, col, richString, format){
+		return _dll.xlSheetWriteRichStr(this.handle, row-1, col-1, richString, format);
 	}
 	
 	readNum = function(row, col){
@@ -57,35 +70,35 @@ class sheet{
 		
 		return 
 			_dll.xlSheetReadNumD(this.handle, row-1, col-1, formatHandle),
-			..aaz.libxl.format( formatHandle.value );
+			..aaz.libxl.format(formatHandle.value);
 	}
 	
-	writeNum = function( row, col, value, format ){
-		return xlSheetWriteNum( this.handle, row-1, col-1, value, format );
+	writeNum = function(row, col, value, format){
+		return xlSheetWriteNum(this.handle, row-1, col-1, value, format);
 	}
 	
-	readBool = function( row, col ){
+	readBool = function(row, col){
 		var formatHandle = {ptr value};
 		
 		return 
-			_dll.xlSheetReadBool( this.handle, row-1, col-1, formatHandle ),
-			..aaz.libxl.format( formatHandle.value );
+			_dll.xlSheetReadBool(this.handle, row-1, col-1, formatHandle),
+			..aaz.libxl.format(formatHandle.value);
 	}
 	
-	writeBool = function( row, col, value, format ){
-		return _dll.xlSheetWriteBool( this.handle, row-1, col-1, value, format )
+	writeBool = function(row, col, value, format){
+		return _dll.xlSheetWriteBool(this.handle, row-1, col-1, value, format)
 	}
 	
-	readBlank = function( row, col ){
+	readBlank = function(row, col){
 		var formatHandle = {ptr value};
 		
 		return 
-			_dll.xlSheetReadBlank( this.handle, row-1, col-1, formatHandle ),
-			..aaz.libxl.format( formatHandle.value );
+			_dll.xlSheetReadBlank(this.handle, row-1, col-1, formatHandle),
+			..aaz.libxl.format(formatHandle.value);
 	}
 	
-	writeBlank = function( row, col, format ){
-		return _dll.xlSheetWriteBlank( this.handle, row-1, col-1, format );
+	writeBlank = function(row, col, format){
+		return _dll.xlSheetWriteBlank(this.handle, row-1, col-1, format);
 	}
 	
 	readFormula = function(row, col){
@@ -93,7 +106,7 @@ class sheet{
 		
 		return 
 			_dll.xlSheetReadFormula(this.handle, row-1, col-1, formatHandle),
-			..aaz.libxl.format( formatHandle.value );
+			..aaz.libxl.format(formatHandle.value);
 	}
 	
 	writeFormula = function(row, col, value, format){
@@ -113,7 +126,7 @@ class sheet{
     }
 
     readComment = function(row, col){
-    	return ..raw.str( _dll.xlSheetReadCommentP(this.handle, row-1, col-1), true ); 
+    	return ..raw.str( _dll.xlSheetReadCommentP(this.handle, row-1, col-1), true); 
     }
     
     writeComment = function(row, col, value, author, width, height){
@@ -141,23 +154,23 @@ class sheet{
     }
     
     colWidth = function(col){
-    	return _dll.xlSheetColWidthD( this.handle, col-1 ); 
+    	return _dll.xlSheetColWidthD(this.handle, col-1); 
     }
     
     rowHeight = function(row){
-    	return _dll.xlSheetRowHeightD( this.handle, row-1 ); 
+    	return _dll.xlSheetRowHeightD(this.handle, row-1); 
     }
     
     colWidthPx = function(col){
-    	return _dll.xlSheetColWidthPx( this.handle, col-1 ); 
+    	return _dll.xlSheetColWidthPx(this.handle, col-1); 
     }
     
     rowHeightPx = function(row){
-    	return _dll.xlSheetRowHeightPx( this.handle, row-1 ); 
+    	return _dll.xlSheetRowHeightPx(this.handle, row-1); 
     }
     		
 	setCol = function(colFirst, colLast, width, format, hidden=0){
-		return xlSheetSetCol( this.handle, colFirst-1, colLast-1, width, format, hidden );
+		return xlSheetSetCol(this.handle, colFirst-1, colLast-1, width, format, hidden);
 	}
 	
 	setRow = function(row, height, format, hidden=0){
@@ -168,32 +181,32 @@ class sheet{
 		return _dll.xlSheetRowHidden(this.handle, row-1);
 	}
 	
-	setRowHidden = function( row, hidden ){
-		return _dll.xlSheetSetRowHidden( this.handle, row-1, hidden );
+	setRowHidden = function(row, hidden){
+		return _dll.xlSheetSetRowHidden(this.handle, row-1, hidden);
 	}
 	
-	colHidden = function( col ){
-		return _dll.xlSheetColHidden( this.handle, col-1 );
+	colHidden = function(col){
+		return _dll.xlSheetColHidden(this.handle, col-1);
 	}
 	
-	setColHidden = function( col, hidden ){
-		return _dll.xlSheetSetColHidden( this.handle, col-1, hidden );
+	setColHidden = function(col, hidden){
+		return _dll.xlSheetSetColHidden(this.handle, col-1, hidden);
 	}
 	
-	getMerge = function( row, col ){
+	getMerge = function(row, col){
 		var rowFirst = {int value};
 		var rowLast = {int value};
 		var colFirst = {int value};
 		var colLast = {int value};
 		
-		if( _dll.xlSheetGetMerge(this.handle, row-1, col-1, rowFirst, rowLast, colFirst, colLast) ){
+		if(_dll.xlSheetGetMerge(this.handle, row-1, col-1, rowFirst, rowLast, colFirst, colLast)){
 			return true, rowFirst.value, rowLast.value, colFirst.value, colLast.value;
 		}
 		return false;
 	}
 	
-    setMerge = function( rowFirst, rowLast, colFirst, colLast ){
-    	return _dll.xlSheetSetMerge( this.handle, rowFirst-1, rowLast-1, colFirst-1, colLast-1 );
+    setMerge = function(rowFirst, rowLast, colFirst, colLast){
+    	return _dll.xlSheetSetMerge(this.handle, rowFirst-1, rowLast-1, colFirst-1, colLast-1);
     }
     
     delMerge = function(row, col){
@@ -201,10 +214,10 @@ class sheet{
     }
 
     mergeSize = function(){
-    	return _dll.xlSheetMergeSize( this.handle ); 	
+    	return _dll.xlSheetMergeSize(this.handle); 	
     }
     
-    merge = function( index ){
+    merge = function(index){
 		var rowFirst = {int value};
 		var rowLast = {int value};
 		var colFirst = {int value};
@@ -218,8 +231,8 @@ class sheet{
 			colLast.value;
     }
     
-    delMergeByIndex = function( index ){
-    	return _dll.xlSheetDelMergeByIndex( this.handle, index-1 ); 	
+    delMergeByIndex = function(index){
+    	return _dll.xlSheetDelMergeByIndex(this.handle, index-1); 	
     }
     
     getPicture = function(index){
@@ -244,11 +257,10 @@ class sheet{
 			offset_y.value;
     }
     
-    removePictureByIndex = function( index ){
-    	return _dll.xlSheetRemovePictureByIndex( this.handle, index-1 ); 
+    removePictureByIndex = function(index){
+    	return _dll.xlSheetRemovePictureByIndex(this.handle, index-1); 
     }
-    
-    
+
     setPicture = function(row, col, pictureId, scale, offsetX, offsetY, pos){
     	xlSheetSetPicture(this.handle, row-1, col-1, pictureId, scale, offsetX, offsetY, pos);
     }
@@ -257,87 +269,87 @@ class sheet{
     	_dll.xlSheetSetPicture2W(this.handle, row-1, col-1, pictureId, width, height, offsetX, offsetY, pos);
     }
     
-    removePicture = function( row, col ){
-    	return _dll.xlSheetRemovePicture( this.handle, row-1, col-1 ); 
+    removePicture = function(row, col){
+    	return _dll.xlSheetRemovePicture(this.handle, row-1, col-1); 
     }
     
-    getHorPageBreak = function( index ){
-    	return _dll.xlSheetGetHorPageBreak( this.handle, index-1 ); 
+    getHorPageBreak = function(index){
+    	return _dll.xlSheetGetHorPageBreak(this.handle, index-1); 
     }
 
-  	getVerPageBreak = function( index ){
-    	return _dll.xlSheetGetVerPageBreak( this.handle, index-1 ); 
+  	getVerPageBreak = function(index){
+    	return _dll.xlSheetGetVerPageBreak(this.handle, index-1); 
     } 
 
-    setHorPageBreak = function( row, pageBreak ){
-    	return _dll.xlSheetSetHorPageBreak( this.handle, row-1, pageBreak ); 
+    setHorPageBreak = function(row, pageBreak){
+    	return _dll.xlSheetSetHorPageBreak(this.handle, row-1, pageBreak); 
     }
     
-    setVerPageBreak = function( col, pageBreak ){
-    	return _dll.xlSheetSetVerPageBreak( this.handle, col-1, pageBreak ); 
+    setVerPageBreak = function(col, pageBreak){
+    	return _dll.xlSheetSetVerPageBreak(this.handle, col-1, pageBreak); 
     }
 
     clear = function(rowFirst, rowLast, colFirst, colLast){
     	return _dll.xlSheetClear( this.handle, rowFirst-1, rowLast-1, colFirst-1, colLast-1 ); 
     }
     
-    insertCol = function( colFirst, colLast ){
-    	return _dll.xlSheetInsertCol( this.handle, colFirst-1, colLast-1 ); 
+    insertCol = function(colFirst, colLast){
+    	return _dll.xlSheetInsertCol(this.handle, colFirst-1, colLast-1); 
     }
     
-    insertRow = function( rowFirst, rowLast ){
-    	return _dll.xlSheetInsertRow( this.handle, rowFirst-1, rowLast-1 ); 
+    insertRow = function(rowFirst, rowLast){
+    	return _dll.xlSheetInsertRow(this.handle, rowFirst-1, rowLast-1); 
     }
     
-    removeCol = function( colFirst, colLast ){
-    	return _dll.xlSheetRemoveCol( this.handle, colFirst-1, colLast-1 ); 
+    removeCol = function(colFirst, colLast ){
+    	return _dll.xlSheetRemoveCol(this.handle, colFirst-1, colLast-1); 
     }
     
-    removeRow = function( rowFirst, rowLast ){
-    	return _dll.xlSheetRemoveRow( this.handle, rowFirst-1, rowLast-1 ); 
+    removeRow = function(rowFirst, rowLast ){
+    	return _dll.xlSheetRemoveRow(this.handle, rowFirst-1, rowLast-1); 
     }
     
     
-    split = function( row, col ){
-    	_dll.xlSheetSplit( this.handle, row-1, col-1 );
+    split = function(row, col){
+    	_dll.xlSheetSplit(this.handle, row-1, col-1);
     }
     
     splitInfo = function(){
 		var row = {int value};
 		var col = {int value};
 		
-		if( _dll.xlSheetSplitInfo(this.handle, row, col) ){
+		if(_dll.xlSheetSplitInfo(this.handle, row, col)){
 			return true, row.value+1, col.value+1; 
 		}
 		return false;
     }
     
-    groupRows = function( rowFirst, rowLast, collapsed ){
-    	return _dll.xlSheetGroupRows( this.handle, rowFirst-1, rowLast-1, collapsed ); 
+    groupRows = function(rowFirst, rowLast, collapsed){
+    	return _dll.xlSheetGroupRows(this.handle, rowFirst-1, rowLast-1, collapsed); 
     }
     
-    groupCols = function( colFirst, colLast, collapsed ){
-    	return _dll.xlSheetGroupCols( this.handle, colFirst-1, colLast-1, collapsed ); 
+    groupCols = function(colFirst, colLast, collapsed){
+    	return _dll.xlSheetGroupCols(this.handle, colFirst-1, colLast-1, collapsed); 
     }
 	
-    insertColAndKeepRanges = function( colFirst, colLast ){
-    	return _dll.xlSheetInsertColAndKeepRanges( this.handle, colFirst-1, colLast-1 );
+    insertColAndKeepRanges = function(colFirst, colLast){
+    	return _dll.xlSheetInsertColAndKeepRanges(this.handle, colFirst-1, colLast-1);
     }
     
-    insertRowAndKeepRanges = function( rowFirst, rowLast ){
-    	return _dll.xlSheetInsertRowAndKeepRanges(this.handle, rowFirst-1, rowLast-1 );
+    insertRowAndKeepRanges = function(rowFirst, rowLast){
+    	return _dll.xlSheetInsertRowAndKeepRanges(this.handle, rowFirst-1, rowLast-1);
     }
     
-	removeColAndKeepRanges = function( colFirst, colLast ){
-		return _dll.xlSheetRemoveColAndKeepRanges( this.handle, colFirst-1, colLast-1 );
+	removeColAndKeepRanges = function(colFirst, colLast){
+		return _dll.xlSheetRemoveColAndKeepRanges(this.handle, colFirst-1, colLast-1);
 	}
 	
- 	removeRowAndKeepRanges = function( rowFirst, rowLast ){
- 		return _dll.xlSheetRemoveRowAndKeepRanges( this.handle, rowFirst-1, rowLast-1 );
+ 	removeRowAndKeepRanges = function( rowFirst, rowLast){
+ 		return _dll.xlSheetRemoveRowAndKeepRanges(this.handle, rowFirst-1, rowLast-1);
  	}
  	
- 	copyCell = function( rowSrc, colSrc, rowDst, colDst ){
- 		return _dll.xlSheetCopyCell( this.handle, rowSrc-1, colSrc-1, rowDst-1, colDst-1 );
+ 	copyCell = function(rowSrc, colSrc, rowDst, colDst){
+ 		return _dll.xlSheetCopyCell(this.handle, rowSrc-1, colSrc-1, rowDst-1, colDst-1);
  	}
  	
    	getPrintFit = function(){
@@ -598,20 +610,6 @@ class sheet{
     @_metaProperty;	
 }
 namespace sheet{
-    xlSheetWriteNum = _dll.api( "xlSheetWriteNum", "int(ptr,int,int,double,ptr)" ); 
-    xlSheetWriteFormulaNum = _dll.api( "xlSheetWriteFormulaNum", "int(ptr, int, int, ustring, double, ptr)" )
-    xlSheetSetCol = _dll.api( "xlSheetSetCol", "int(ptr,int,int,double,ptr,int)" ); 
-    xlSheetSetRow = _dll.api( "xlSheetSetRow", "int(ptr,int,double,ptr,int)" ); 
-    xlSheetSetPicture = _dll.api( "xlSheetSetPicture", "void(ptr, int, int, int, double, int, int, int)" )	
-    xlSheetSetHeader = _dll.api( "xlSheetSetHeader", "int(ptr, ustring, double)" );
-    xlSheetSetFooter = _dll.api( "xlSheetSetFooter", "int(ptr, ustring, double)" );
-    xlSheetSetMarginLeft = _dll.api( "xlSheetSetMarginLeft", "void(ptr, double)" ); 
-    xlSheetSetMarginRight = _dll.api( "xlSheetSetMarginRight", "void(ptr, double)" ); 
-	xlSheetSetMarginTop = _dll.api( "xlSheetSetMarginTop", "void(ptr, double)" ); 
-	xlSheetSetMarginBottom = _dll.api( "xlSheetSetMarginBottom", "void(ptr, double)" ); 
-	xlSheetAddDataValidationDouble = _dll.api( "xlSheetAddDataValidationDouble", "void(ptr, int, int, int, int, int, int, double, double)" ); 
-	xlSheetAddDataValidationDoubleEx = _dll.api( "xlSheetAddDataValidationDoubleEx", "void(ptr, int, int, int, int, int, int, double, double, int, int, int, int, ustring, ustring,ustring, ustring, int)" ); 
-
     _properties = {
    		pictureSize = {
    			_get = function(){
